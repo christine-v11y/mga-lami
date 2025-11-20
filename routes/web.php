@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         // Admin Dashboard
         Route::get('/admin/dashboard', function () {
-            return 'Admin Dashboard';
+            return view('admin.admin_dashboard');
         })->name('admin.dashboard');
 
         Route::get('/users', function () { return 'Admin: Users list'; })->name('users.index');
@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     // =====================
     Route::middleware('role:instructor')->group(function () {
         Route::get('/instructor/dashboard', function () {
-            return 'Instructor Dashboard';
+            return view('instructor.instructor_dashboard');
         })->name('instructor.dashboard');
     });
 
@@ -55,9 +55,10 @@ Route::middleware('auth')->group(function () {
     // STUDENT ROUTES
     // =====================
     Route::middleware('role:student')->group(function () {
-        Route::get('/student/dashboard', function () {
-            return 'Student Dashboard';
-        })->name('student.dashboard');
-    });
+    Route::get('/student/dashboard', function () {
+        return view('student.student_dashboard');
+    })->name('student.dashboard');
+});
+
 
 });
