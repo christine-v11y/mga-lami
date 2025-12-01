@@ -40,33 +40,45 @@ class AuthController extends Controller
         auth()->login($user);
 
         // Redirect based on role
-        if ($user->role == 'admin') {
+        if ($user->role == '0') {
             return redirect('/admin/dashboard');
-        } elseif ($user->role == 'instructor') {
+        } elseif ($user->role == '2') {
             return redirect('/instructor/dashboard');
         } else {
             return redirect('/student/dashboard');
         }
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'role' => 'required|in:admin,student,instructor'
-        ]);
+   public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|min:3',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|min:6',
+        'profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password); // use hash
-        $user->role = $request->role;
-        $user->save();
+    $studentRole = 1;
 
-        return redirect()->route('login')->with('success', 'Account created!');
+    $user = new User();
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->password = Hash::make($request->password);
+    $user->role = $studentRole;
+
+    if ($request->hasFile('profile')) {
+        $file = $request->file('profile');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $file->move(public_path('uploads/profile'), $filename);
+        $user->profile = $filename;
+    } else {
+        $user->profile = null; // or default
     }
+
+    $user->save();
+
+    return redirect()->route('login')->with('success', 'Account created!');
+}
 
     // Logout user
     public function logout(Request $request)

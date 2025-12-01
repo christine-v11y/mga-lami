@@ -1,22 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light ps-3" style="margin-left: 250px;">
-    <div class="container-fluid">
-        <span class="navbar-brand">Laravel Dashboard</span>
+@php
+    $roles = [
+        1 => 'Student',
+        2 => 'Instructor',
+        0 => 'Admin',
+    ];
+@endphp
 
-        <ul class="navbar-nav ms-auto me-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ auth()->user()->name ?? 'User' }}
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <div class="container-fluid">
+<span class="navbar-brand mb-0 h1">
+    {{ $roles[(int) Auth::user()->role] ?? 'User' }} Dashboard
+
+</span>
+
+        <div class="d-flex">
+            <div class="dropdown">
+                <a class="btn btn-light dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ Auth::user()->name }}
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                   {{-- <li><a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a></li>--}}
                     <li>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form action="{{ route('logout') }}" method="POST">
                             @csrf
                             <button type="submit" class="dropdown-item">Logout</button>
                         </form>
                     </li>
                 </ul>
-            </li>
-        </ul>
+            </div>
+        </div>
     </div>
 </nav>

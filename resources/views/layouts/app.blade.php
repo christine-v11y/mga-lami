@@ -14,13 +14,10 @@
     body {
       overflow-x: hidden;
     }
-    .content {
-      margin-left: 250px;
-      padding: 20px;
-    }
 
+    /* Sidebar */
     .sidebar {
-      background-color: #1e293b; /* dark blue-gray background */
+      background-color: #1e293b;
       color: #fff;
       width: 250px;
       height: 100vh;
@@ -80,18 +77,24 @@
       color: #ffffff !important;
       border-radius: 5px;
     }
+
+    /* Main content */
+    .main-content {
+      margin-left: 250px;
+      padding: 20px;
+    }
   </style>
 </head>
 <body>
 
-@include('partials.sidebar')
+  {{-- Sidebar --}}
+  @include('partials.sidebar')
 
+  {{-- Main content --}}
   <div class="main-content">
     @include('partials.navbar')
 
-    <div class="content">
-      @yield('content')
-    </div>
+    @yield('content')
   </div>
 
   <!-- Bootstrap JS Bundle -->

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\UserManagementController;
 
 // Redirect root to register page (instead of login)
 Route::redirect('/', '/register');
@@ -37,9 +38,15 @@ Route::middleware('auth')->group(function () {
             return view('admin.admin_dashboard');
         })->name('admin.dashboard');
 
-        Route::get('/users', function () { return 'Admin: Users list'; })->name('users.index');
-        Route::get('/users/create', function () { return 'Admin: Add User Form'; })->name('users.create');
-        Route::get('/reports', function () { return 'Admin: Reports Page'; })->name('reports.index');
+       Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
+
+       Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
+       Route::post('/admin/users', [UserManagementController::class, 'store'])->name('admin.users.store');
+
+       Route::get('/admin/users/{id}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit'); 
+       Route::put('/admin/users/{id}', [UserManagementController::class, 'update'])->name('admin.users.update');
+
+       Route::delete('/admin/users/{id}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
     });
 
     // =====================
